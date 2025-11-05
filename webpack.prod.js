@@ -90,7 +90,8 @@ module.exports = {
 
         new CopyPlugin({
             patterns: [ 
-                { from: "src/assets/", to: "assets/" }
+                { from: "src/assets/", to: "assets/" },
+                { from: path.resolve(__dirname, 'src/model'), to: 'model' }
             ],
 
           })

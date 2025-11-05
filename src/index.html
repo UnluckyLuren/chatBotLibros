@@ -1,225 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Creador de credenciales</title>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
-	<link rel="stylesheet" href="./assets/css/styles-pago.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Sci-Fi (con IA)</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
 </head>
-<body id="Body-scroll" >
-	<div class="contenedor" id="containerTarjeta">
-
-		<!-- Tarjeta -->
-		<section class="tarjeta" id="tarjeta">
-
-			<div class="delantera" id="delantera">
-				<!-- <div class="logo-marca" id="logo-marca">
-					<h1 id="bankname">Bank name</h1>
-				</div> -->
-				<!-- <img src="./assets/img-pago/chip-tarjeta.png" class="chip"> -->
-
-				<div class="datos">
-					<div class="grupo acomodoCurp " id="numero">
-						<p class="numero">#### #### #### ####</p>
-					</div>
-
-					<div class="flexbox">
-
-						<div class="grupo acomodoUser" id="nombre">
-							<p class="nombre" id="userName" >Alumno</p>
-						</div>
-
-						<div class="acomodoGradeup grupo" id="gradeUp" >
-							<p> <span id="textGrade" >Grado</span> <span id="textGrupo" >Grupo</span> </p>
-						</div>
-
-						<div class="insertImg" id="insertImg" >
-							<img src="" id="imgChoosen" class="styleImgUser">
-						</div>
-
-						<!-- <div class="grupo selectExpirDisp selectExpir " id="expiracion" >
-							<p class="expiracion"><span class="mes">MM</span> / <span class="year">AA</span></p>
-						</div> -->
-
-
-					</div>
-				</div>
-			</div>
-						
-
-			<div class="trasera" id="backTarjeta" >
-				<div class="barra-magnetica"></div>
-				<div class="datos">
-					<!-- <div class="grupo" id="firma">
-						<p class="label">Firma</p>
-						<div class="firma"><p> </p></div>
-					</div> -->
-					<!-- <div class="grupo" id="ccv">
-						<p class="label">CVV</p>
-						<p class="ccv"></p>
-					</div> -->
-				</div>
-				<p class="leyenda">Lorem ipsum dolor sit amet consectetur, adipisicing elit. A vitae enim deleniti voluptate explicabo quia culpa distinctio accusantium libero aliquid, recusandae neque veritatis harum quod iure suscipit repudiandae illo magni!</p>
-				<!-- <a href="#" class="link-banco">www.tubanco.com</a> -->
-			</div>
-		</section>
-
-		<!-- Contenedor Boton Abrir Formulario -->
-
-		<!-- <div class="contenedor-btn">
-			<button class="btn-abrir-formulario" id="btn-abrir-formulario">
-				<i class="fas fa-plus"></i>
-			</button>
-		</div> -->
-
-		<!-- Formulario -->
-
-		<form action="" id="formulario-tarjeta" class="formulario-tarjeta">
-			<label class="grupo">Información del solicitante</label>
-			<div class="graderup" id="covertToPdf" >
-				<br>
-
-				<div>
-					<label for="inputGrado" class="labelGraup" >Grado</label>
-					<input type="text" id="inputGrado" maxlength="1" autocomplete="off">
-				</div>
-				
-				<div>
-					<label for="inputGrupo">Grupo</label>
-					<input type="text" id="inputGrupo" maxlength="1" autocomplete="off">
-				</div>
-
-				<div>
-					<label for="inputFile" class="inputImageClick" >Añadir foto</label>
-					<input type="file" id="inputFile" name="imageInput" accept="image/*" >
-				</div>
-
-			</div>
-
-			<div class="grupo">
-				<label for="inputNumero">CURP</label>
-				<input type="text" id="inputNumero" maxlength="19" autocomplete="off">
-			</div>
-			<div class="grupo">
-				<label for="inputNombre">Nombre</label>
-				<input type="text" id="inputNombre" maxlength="30" autocomplete="off">
-			</div>
-			<div>
-				<!-- <div class="grupo expira">
-					<label for="selectMes">Expiracion</label>
-					
-					<div class="optionFlex">
-
-						<div>
-							<select name="mes" id="selectMes" class="inputSelect" >
-								<option disabled selected>Mes</option>
-							</select>
-							<i class="fas fa-angle-down"></i>
-						</div>
-
-						<div>
-							<select name="year" id="selectYear" class="inputSelect" >
-								<option disabled selected>Año</option>
-							</select>
-							<i class="fas fa-angle-down"></i>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="grupo ccv">
-					<label for="inputCCV">CVV</label>
-					<input type="text" id="inputCCV" maxlength="3">
-				</div> -->
-			</div>
-
-				<a href="#" id="open" > <button class="btn-enviar" id="btnCrearPdf" >Descargar</button> </a> 
-
-		</form>
-	</div>
-
-
-	<!-- Menu -->
-
-<!-- 
-	<div class="Menu-emergente" id="Menu-emergente" >
-
-        <ul class="Menu-aside">
-
-            <li class="Perfil-User-menu"><a href="./Login-regist.html"> <img src="#"> <p>Inicia Sesión</p> </a></li>
-            <li><a href="./Catalogo.html"> <img src="./img/Img Catalogo/Carpeta.png"> Tus Proyectos </a></li>
-            <li><a href="./Catalogo.html"> <img src="./img/Img Catalogo/Recientes.png"> Recientes </a></li>
-            <li><a href="../Edition/PreEdition.html"> <img src="./img/Img Catalogo/Alfiler.png"> Crea un plano </a></li>
-
-        </ul>
-
-        <ul class="Menu-aside Lista-Categorias">
-
-            <li>Categorias</li>
-            <li> <a href="./Catalogo.html"> Casas Infonavit y similares </a> </li>
-            <li> <a href="./Catalogo.html"> Casas Medianas</a> </li>
-            <li><a href="./Catalogo.html">  Casas Grandes </a> </li>
-            <li><a href="./Catalogo.html"> Casas Residenciales </a> </li>
-
-        </ul>
-
-    </div> -->
-
-
-
-	<!-- <div id="navegacion">
-
-		<div class="Menu-emergente-image" id="Menu-emergente-image" >
-			<img src="./assets/img/Menu-desplegable.png" alt="imagen de menu">
-		</div>
-
-		<ul>
-			<li><a href="../index.html">Inicio</a> </li>
-			<li><a href="./Catalogo.html">Catalogo</a> </li>
-			<li> <a target="_blanck" href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox">Contactanos</a> </li>
-		</ul>
-	</div> -->
-  
-	<!-- <div class="Marca">
-		<img src="./img/Marca.png" width="285" alt="Imagen de la marca" >
-	</div> -->
-  
-
-
-	<!-- Ventana emergente -->
-
-        <!-- Para que se habra la ventana debes oponerle a un a el id: open -->
-        <div class="modal-container" id="modal_container">
-            <div class="modal">
-                <div class="compr-PAGADA">       
-                    <!-- <button id="close"><img src="/Main/img/Img Catalogo/x.png"></button> -->
-					<p>Tu descarga comenzará en breve</p>
-
-					<div class="fon-tx-pago">
-						<p>Se guardo en tu dispositivo</p>
-						<p>Da click en el boton de abajo para cerrar está ventana</p>
-					</div>
-
-					<a href="#"> <button class="btn-enviar btn-ver-plano" id="close" > Cerrar </button> </a>
-
-                </div>
-              
+<body>
+    <div id="chat-container">
+        <div id="chat-header">
+            <h2>Chatbot Sci-Fi</h2>
+        </div>
+        <div id="chat-window">
+            <div class="bot-message" id="loading-status">
+                Cargando modelos de IA... por favor espera.
             </div>
         </div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Escribe tu pregunta..." disabled>
+            <button id="send-btn" disabled>Enviar</button>
+        </div>
+    </div>
 
 
-
-
-
-	<!-- Scripts -->
-
-	<script src="./assets/js/Scripts-Ventana-de-pago-procesado.js"></script>
-	<script src="./assets/js/main-pago.js"></script>
-	
-
+    
+    <script src="./assets/js/baseConocimiento.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtract = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
@@ -87,7 +88,8 @@ module.exports = {
 
         new CopyPlugin({
             patterns: [ 
-                { from: "src/assets/", to: "assets/" }
+                { from: "src/assets/", to: "assets/" },
+                { from: path.resolve(__dirname, 'src/model'), to: 'model' }
             ]
           })
 
