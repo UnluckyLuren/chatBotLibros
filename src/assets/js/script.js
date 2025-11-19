@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             sentenceEncoder = await use.load();
             
             console.log("¡Modelos cargados! El bot está listo.");
-            loadingStatus.textContent = "¡Hola! Soy un bot con IA. Pregúntame sobre Sci-Fi.";
+            loadingStatus.textContent = "¡Hola! Soy Rubble bot tu asistente IA. Pregúntame sobre Sci-Fi.";
             loadingStatus.className = "bot-message";
             userInput.disabled = false;
             sendBtn.disabled = false;
