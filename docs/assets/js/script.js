@@ -237,11 +237,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuBtn = document.getElementById('menu-btn');
     const closeBtn = document.getElementById('close-sidebar-btn');
     const sidebar = document.getElementById('sidebar');
+    const pantallaAncho = window.screen.width;
 
 
     // Función para alternar el menú
     function toggleMenu() {
-        sidebar.classList.toggle('collapsed');
+
+        if (pantallaAncho <= 800) {
+            sidebar.classList.toggle('active');     
+            sidebar.classList.remove('collapsed');       
+        } else {
+            sidebar.classList.toggle('collapsed');
+            sidebar.classList.remove('active');   
+        }
+
     }
     
     menuBtn.addEventListener('click', toggleMenu);
