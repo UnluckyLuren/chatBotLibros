@@ -10,27 +10,41 @@
 </head>
 <body>
 
-    <div id="background"><canvas id="stars"></canvas></div>
+<div id="background"><canvas id="stars"></canvas></div>
 
+<div class="chat-wrapper">
+
+    <!-- BOTÓN MENU -->
+    <button id="menu-btn">MENÚ</button>
+
+    <!-- CHAT -->
     <div id="chat-container">
         <div id="chat-header">
-            <h2>Chatbot Sci-Fi</h2>
+            <div id="chat-header">
+                <button id="menu-btn">MENÚ</button>
+                <h2>Chatbot Sci-Fi</h2>
+</div>
         </div>
+
         <div id="chat-window">
-            <div class="bot-message" id="loading-status">
-                Cargando modelos de IA... por favor espera.
+            <div class="message-wrapper bot">
+                <img class="avatar-bot" src="./assets/img/rubble.png">
+                <div class="bot-message" id="loading-status">
+                    Cargando modelos de IA... por favor espera.
+                </div>
             </div>
         </div>
+
         <div id="input-container">
             <input type="text" id="user-input" placeholder="Escribe tu pregunta..." disabled>
             <button id="send-btn" disabled>Enviar</button>
         </div>
     </div>
+</div>
 
 
-    
     <script src="./assets/js/baseConocimiento.js"></script>
     <script src="./assets/js/script.js"></script>
-    <script src="./assets/js/BG.js"></script>
-</body>
+    
+
 </html>

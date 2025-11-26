@@ -87,12 +87,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function displayMessage(message, sender) {
-        const messageElement = document.createElement("div");
-        messageElement.className = `${sender}-message`;
-        messageElement.textContent = message;
-        chatWindow.appendChild(messageElement);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+    const wrapper = document.createElement("div");
+    wrapper.className = `message-wrapper ${sender}`;
+
+    if (sender === "bot") {
+        const avatar = document.createElement("img");
+        avatar.src = "./assets/img/rubble.png";
+        avatar.className = "avatar-bot";
+        wrapper.appendChild(avatar);
     }
+
+    const msg = document.createElement("div");
+    msg.className = `${sender}-message`;
+    msg.textContent = message;
+
+    wrapper.appendChild(msg);
+    chatWindow.appendChild(wrapper);
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+
 
     //  NÚCLEO DE TENSORFLOW.JS 
 
