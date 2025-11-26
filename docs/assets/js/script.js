@@ -87,12 +87,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function displayMessage(message, sender) {
-        const messageElement = document.createElement("div");
-        messageElement.className = `${sender}-message`;
-        messageElement.textContent = message;
-        chatWindow.appendChild(messageElement);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+    const wrapper = document.createElement("div");
+    wrapper.className = `message-wrapper ${sender}`;
+
+    if (sender === "bot") {
+        const avatar = document.createElement("img");
+        avatar.src = "./assets/img/rubble.png";
+        avatar.className = "avatar-bot";
+        wrapper.appendChild(avatar);
     }
+
+    const msg = document.createElement("div");
+    msg.className = `${sender}-message`;
+    msg.textContent = message;
+
+    wrapper.appendChild(msg);
+    chatWindow.appendChild(wrapper);
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+
 
     //  NÚCLEO DE TENSORFLOW.JS 
 
@@ -215,3 +230,42 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `Libros relacionados con "${theme}": ${titles}.`;
     }
 });
+
+// Para el menu aside
+
+document.addEventListener('DOMContentLoaded', () => {
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-sidebar-btn');
+    const sidebar = document.getElementById('sidebar');
+
+
+    // Función para alternar el menú
+    function toggleMenu() {
+        sidebar.classList.toggle('collapsed');
+    }
+    
+    menuBtn.addEventListener('click', toggleMenu);
+    closeBtn.addEventListener('click', toggleMenu);
+});
+
+// Para el boton de nuevo chat
+
+const btNuevoChatsito = document.getElementById('btNuevoChatsito');
+
+btNuevoChatsito.addEventListener('click', () => {
+    location.reload();
+});
+
+// Para los comandos
+
+const misComandos = document.querySelectorAll('.history-list li');
+const sideCont = document.getElementById('sideCont');
+const inputEscribir = document.getElementById('user-input');
+
+sideCont.addEventListener('click', e => {
+    if (e.target.tagName === 'LI') {
+        inputEscribir.value = e.target.textContent;
+    }
+});
+
+

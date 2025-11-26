@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,29 +9,88 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
     <link rel="stylesheet" href="./assets/css/styles.css">
 <script defer src="main.js"></script></head>
+
 <body>
 
-    <div id="background"><canvas id="stars"></canvas></div>
+    <div class="chat-wrapper" id="chatsito">
+        <!-- Menu aside -->
 
-    <div id="chat-container">
-        <div id="chat-header">
-            <h2>Chatbot Sci-Fi</h2>
-        </div>
-        <div id="chat-window">
-            <div class="bot-message" id="loading-status">
-                Cargando modelos de IA... por favor espera.
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <button id="close-sidebar-btn">✖</button>
+                <h3>COMANDOS</h3>
+            </div>
+
+            <button class="new-chat-btn" id="btNuevoChatsito">
+                <span>+</span> Nuevo Chat
+            </button>
+
+            <div class="sidebar-content" id="sideCont">
+                <div class="time-group">Buscar sinopsis</div>
+                <ul class="history-list">
+                    <li><span class="icon">📖</span> De trata... </li>
+                    <li><span class="icon">📖</span> Sobre que va... </li>
+                    <li><span class="icon">📖</span> Acerca de que trata... </li>
+                </ul>
+
+                <div class="time-group">Buscar libros por autor</div>
+                <ul class="history-list">
+                    <li><span class="icon">🛰️</span> Que libros escribio... </li>
+                    <li><span class="icon">🛰️</span> Dime los libros de... </li>
+                    <li><span class="icon">🛰️</span> Qué otras cosas escribió... </li>
+                </ul>
+
+                <div class="time-group">Buscar autor</div>
+                <ul class="history-list">
+                    <li><span class="icon">👤</span> Quién escribió... </li>
+                    <li><span class="icon">👤</span> Quién es el autor de... </li>
+                    <li><span class="icon">👤</span> Autor de... </li>
+                </ul>
+
+                <div class="time-group">Buscar libros por tema/subgénero</div>
+                <ul class="history-list">
+                    <li><span class="icon">📚</span> Recomiéndame libros de... </li>
+                    <li><span class="icon">📚</span> Libros con temas de... </li>
+                    <li><span class="icon">📚</span> Dame libros de... </li>
+                </ul>
+
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="footer-item">⚙️ Configuración</div>
+                <div class="footer-item">❓ Ayuda</div>
+            </div>
+        </aside>
+
+        <!-- CHAT -->
+        <div id="chat-container">
+            <div id="chat-header">
+                <div id="chat-header">
+                    <h2>Chatbot Sci-Fi</h2>
+                </div>
+            </div>
+
+            <div id="chat-window">
+                <div class="message-wrapper bot">
+                    <img class="avatar-bot" src="./assets/img/rubble.png">
+                    <div class="bot-message" id="loading-status">
+                        Cargando modelos de IA... por favor espera.
+                    </div>
+                </div>
+            </div>
+
+            <div id="input-container">
+                <button id="menu-btn">MENÚ</button>
+                <input type="text" id="user-input" placeholder="Escribe tu pregunta..." disabled>
+                <button id="send-btn" disabled>Enviar</button>
             </div>
         </div>
-        <div id="input-container">
-            <input type="text" id="user-input" placeholder="Escribe tu pregunta..." disabled>
-            <button id="send-btn" disabled>Enviar</button>
-        </div>
+
     </div>
 
 
-    
     <script src="./assets/js/baseConocimiento.js"></script>
     <script src="./assets/js/script.js"></script>
-    <script src="./assets/js/BG.js"></script>
-</body>
+
+
 </html>
