@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para alternar el menú
     function toggleMenu() {
 
-        if (pantallaAncho <= 800) {
+        if (pantallaAncho <= 768) {
             sidebar.classList.toggle('active');     
             sidebar.classList.remove('collapsed');       
         } else {
@@ -258,7 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Para el boton de nuevo chat
-
 const btNuevoChatsito = document.getElementById('btNuevoChatsito');
 
 btNuevoChatsito.addEventListener('click', () => {
@@ -266,14 +265,18 @@ btNuevoChatsito.addEventListener('click', () => {
 });
 
 // Para los comandos
-
-const misComandos = document.querySelectorAll('.history-list li');
-const sideCont = document.getElementById('sideCont');
+const sideContCom = document.getElementById('sideCont');
 const inputEscribir = document.getElementById('user-input');
+const sidebar = document.getElementById('sidebar');
+const pantAncho = window.screen.width;
 
 sideCont.addEventListener('click', e => {
     if (e.target.tagName === 'LI') {
         inputEscribir.value = e.target.textContent;
+        if (pantAncho <= 768) {
+            sidebar.classList.remove('collapsed');
+            sidebar.classList.remove('active');     
+        } 
     }
 });
 
