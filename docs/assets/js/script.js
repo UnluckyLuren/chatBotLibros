@@ -4,14 +4,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     let nluModel = null;
     let sentenceEncoder = null;
     const { libros, autores } = BCLibrosSCIFI;
-    
+
     // Este mapeo DEBE ser idéntico al de tu script de entrenamiento
     const INTENTIONS = [
-      'saludar',
-      'buscar_sinopsis',
-      'buscar_autor',
-      'libros_por_autor',
-      'libros_por_tema'
+        'saludar',
+        'buscar_sinopsis',
+        'buscar_autor',
+        'libros_por_autor',
+        'libros_por_tema',
+        'buscar_biografia'
     ];
 
     //  Elementos del DOM 
@@ -26,11 +27,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Cargar nuestro modelo de NLU (Clasificador de Intención)
             console.log("Cargando modelo...");
             nluModel = await tf.loadLayersModel('./model/model.json');
-            
+
             // Cargar el codificador de frases (Universal Sentence Encoder)
             console.log("Cargando Sentence Encoder...");
             sentenceEncoder = await use.load();
-            
+
             console.log("¡Modelos cargados! El bot está listo.");
             loadingStatus.textContent = "¡Hola! Soy Rubble bot tu asistente IA. Pregúntame sobre Sci-Fi.";
             loadingStatus.className = "bot-message";
@@ -44,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             loadingStatus.style.backgroundColor = "#ffcccc";
         }
     }
-    
+
     // Iniciar la carga de modelos
     loadModels();
 
@@ -71,10 +72,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Predecir la intención
         const intent = await predictIntent(query);
-        
+
         // Extraer entidades (forma simple)
         const entity = extractEntity(query, intent);
-        
+
         // Obtener respuesta
         const response = getBotResponse(intent, entity, query);
 
@@ -87,25 +88,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function displayMessage(message, sender) {
-    const wrapper = document.createElement("div");
-    wrapper.className = `message-wrapper ${sender}`;
+        const wrapper = document.createElement("div");
+        wrapper.className = `message-wrapper ${sender}`;
 
-    if (sender === "bot") {
-        const avatar = document.createElement("img");
-        avatar.src = "./assets/img/rubble.png";
-        avatar.className = "avatar-bot";
-        wrapper.appendChild(avatar);
+        if (sender === "bot") {
+            const avatar = document.createElement("img");
+            avatar.src = "./assets/img/rubble.png";
+            avatar.className = "avatar-bot";
+            wrapper.appendChild(avatar);
+        }
+
+        const msg = document.createElement("div");
+        msg.className = `${sender}-message`;
+        msg.textContent = message;
+
+        wrapper.appendChild(msg);
+        chatWindow.appendChild(wrapper);
+
+        chatWindow.scrollTop = chatWindow.scrollHeight;
     }
-
-    const msg = document.createElement("div");
-    msg.className = `${sender}-message`;
-    msg.textContent = message;
-
-    wrapper.appendChild(msg);
-    chatWindow.appendChild(wrapper);
-
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-}
 
 
 
@@ -117,36 +118,43 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const lowerQuery = query.toLowerCase();
-        
+
         // 1. Convertir la frase del usuario en un vector (Tensor)
         const embedding = await sentenceEncoder.embed([lowerQuery]);
-        
+
         // 2. Usar nuestro modelo para predecir
         const prediction = nluModel.predict(embedding);
-        
+
         // 3. Obtener la intención con la probabilidad más alta
         const intentIndex = (await prediction.argMax(1).data())[0];
-        
+
+        // Para saber el porcentaje de pertenencia
+        const probabilidades = await prediction.data(); // Obtener todos los valores
+        console.log("Confianza por intención:");
+        INTENTIONS.forEach((intencion, i) => {
+            console.log(`${intencion}: ${(probabilidades[i] * 100).toFixed(2)}%`);
+        });
+
         // Limpieza de memoria
         embedding.dispose();
         prediction.dispose();
-        
+
         return INTENTIONS[intentIndex];
     }
-    
+
     //  LÓGICA DEL BOT (Igual que antes, pero usando la 'intención') 
 
     function getBotResponse(intent, entity, originalQuery) {
         console.log(`Intención: ${intent}, Entidad: ${entity}`);
-        
+
         switch (intent) {
             case 'saludar':
                 return "¡Hola! ¿Sobre qué libro de ciencia ficción quieres saber?";
-            
+
             case 'buscar_sinopsis':
                 if (!entity) return `No reconocí un libro en tu pregunta. ¿De qué libro quieres la sinopsis?`;
                 return getSynopsis(entity);
-                
+
             case 'buscar_autor':
                 if (!entity) return `No reconocí un libro en tu pregunta. ¿De qué libro quieres saber el autor?`;
                 return getAuthor(entity);
@@ -154,10 +162,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             case 'libros_por_autor':
                 if (!entity) return `No reconocí un autor en tu pregunta. ¿De qué autor quieres ver sus libros?`;
                 return getBooksByAuthor(entity);
-            
+
             case 'libros_por_tema':
-                 if (!entity) return `No reconocí un tema en tu pregunta. ¿Sobre qué tema buscas libros?`;
+                if (!entity) return `No reconocí un tema en tu pregunta. ¿Sobre qué tema buscas libros?`;
                 return getBooksByTheme(entity);
+
+            case 'buscar_biografia':
+                if (!entity) return `No reconocí el autor. ¿De quién quieres saber la biografía?`;
+                return getBiography(entity);
 
             default:
                 return "Lo siento, no entendí esa pregunta. Intenta reformularla.";
@@ -167,7 +179,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     //  Extracción de Entidades (Simple) 
     // En un sistema real, esto también usaría un modelo de IA (NER)
     // Aquí, solo buscamos coincidencias en la base de datos.
-    
+
     function extractEntity(query, intent) {
         const lowerQuery = query.toLowerCase();
 
@@ -176,10 +188,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             const foundBook = libros.find(libro => lowerQuery.includes(libro.titulo.toLowerCase()));
             return foundBook ? foundBook.titulo : null;
         }
-        
-        if (intent === 'libros_por_autor') {
-             // Buscar un nombre de autor
-            const foundAuthor = autores.find(autor => lowerQuery.includes(autor.nombre.toLowerCase().split(' ')[0])); // Busca por apellido
+
+        if (intent === 'libros_por_autor' || intent === 'buscar_biografia') {
+            // Buscar un nombre de autor
+            const foundAuthor = autores.find(autor => lowerQuery.includes(autor.nombre.toLowerCase().split(' ')[0].toLowerCase()));
             return foundAuthor ? foundAuthor.nombre : null;
         }
 
@@ -193,7 +205,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             return null; // No se encontró un tema conocido
         }
-        
+
         return null;
     }
 
@@ -201,7 +213,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function getSynopsis(title) {
         const book = libros.find(l => l.titulo.toLowerCase() === title.toLowerCase());
-        return book 
+        return book
             ? `Sinopsis de "${book.titulo}": ${book.sinopsis}`
             : `No pude encontrar el libro "${title}".`;
     }
@@ -221,13 +233,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function getBooksByTheme(theme) {
-        const foundBooks = libros.filter(libro => 
+        const foundBooks = libros.filter(libro =>
             (libro.subgenero && libro.subgenero.some(s => s.toLowerCase().includes(theme))) ||
             (libro.temas && libro.temas.some(t => t.toLowerCase().includes(theme)))
         );
         if (foundBooks.length === 0) return `No encontré libros sobre "${theme}".`;
         const titles = foundBooks.map(libro => libro.titulo).join(", ");
         return `Libros relacionados con "${theme}": ${titles}.`;
+    }
+
+    function getBiography(authorName) {
+        const foundAuthor = autores.find(autor => autor.nombre.toLowerCase() === authorName.toLowerCase());
+        if (!foundAuthor) return `No tengo información biográfica sobre "${authorName}".`;
+        return `Biografía de ${foundAuthor.nombre}: ${foundAuthor.biografia_corta}`;
     }
 });
 
@@ -244,15 +262,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleMenu() {
 
         if (pantallaAncho <= 768) {
-            sidebar.classList.toggle('active');     
-            sidebar.classList.remove('collapsed');       
+            sidebar.classList.toggle('active');
+            sidebar.classList.remove('collapsed');
         } else {
             sidebar.classList.toggle('collapsed');
-            sidebar.classList.remove('active');   
+            sidebar.classList.remove('active');
         }
 
     }
-    
+
     menuBtn.addEventListener('click', toggleMenu);
     closeBtn.addEventListener('click', toggleMenu);
 });
@@ -275,8 +293,8 @@ sideCont.addEventListener('click', e => {
         inputEscribir.value = e.target.textContent;
         if (pantAncho <= 768) {
             sidebar.classList.remove('collapsed');
-            sidebar.classList.remove('active');     
-        } 
+            sidebar.classList.remove('active');
+        }
     }
 });
 

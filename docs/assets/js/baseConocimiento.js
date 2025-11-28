@@ -1202,7 +1202,7 @@ const BCLibrosSCIFI = {
             "biografia_corta": "Escritor estadounidense conocido por sus obras de ficción especulativa ('Snow Crash', 'Criptonomicón') que abarcan cyberpunk e historia."
         },
         {
-            "nombre": "Stanisław Lem",
+            "nombre": "Stanislaw Lem",
             "biografia_corta": "Escritor polaco de ciencia ficción filosófica y satírica, famoso mundialmente por 'Solaris'."
         },
         {
